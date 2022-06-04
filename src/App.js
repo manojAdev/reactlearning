@@ -1,34 +1,24 @@
+// One Parent component, one child and one super child component calling and form component
 import React, { useState } from "react";
-import './index.css';
-import MyList from "./listComponent";
+import Form from "./FormComponent";
 const App = () => {
-  const [myM, setMYm] = useState("");
+  const [myInput, setInput] = useState("");
+  const [myList, setmyList] = useState([]);
 
-  const [managerListS, setmanagerListS] = useState([]);
-
-  //Getting input field value
-  const inputManager = (e) => {
-    let inV = e.target.value;
-    setMYm(inV);
+  const formSubmitHandler = (e) => {
+    let updatedArray = [...new Set([...myList, myInput])];
+    setmyList(updatedArray);
+    e.preventDefault();
   };
 
-  const formSubmit = (e) => {
-    //merging old and new values into managerListS array
-    //setmanagerListS([...managerListS, myM]); with duplicate value
-    let newManagerStates=[...managerListS, myM];
-    newManagerStates=[...new Set(newManagerStates)];
-    setmanagerListS(newManagerStates);
-    e.preventDefault(); //for after form sumission no need to reload the page
+  const inputHandler = (e) => {
+    let inV = e.target.value;
+    setInput(inV);
   };
 
   return (
     <div>
-      <form onSubmit={formSubmit}>
-        <label>Enter Manager Name</label>:{" "}
-        <input type="text" onChange={inputManager} />
-        <input type="submit" value="Add Manager" />
-      </form>
-      <MyList data={managerListS} />
+      <Form data1={formSubmitHandler} data2={inputHandler} listdata={myList} />
     </div>
   );
 };
